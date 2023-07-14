@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MyController {
@@ -17,7 +18,7 @@ public class MyController {
 
     @RequestMapping("/")
     public String showAllEmployees(Model model){
-        var allEmployees =employeeService.getAllEmployees();
+        var allEmployees = employeeService.getAllEmployees();
         model.addAttribute("allEmps", allEmployees);
         return "all-employees";
     }
@@ -34,6 +35,19 @@ public class MyController {
 
         employeeService.saveEmployee(employee);
 
+        return "redirect:/";
+    }
+
+    @RequestMapping("/updateEmployee")
+    public String updateEmployee(@RequestParam("empId") int id, Model model) {
+        var employee = employeeService.getEmployee(id);
+        model.addAttribute("employee", employee);
+        return "employee-info";
+    }
+
+    @RequestMapping("/deleteEmployee")
+    public String deleteEmployee(@RequestParam("empId") int id) {
+        employeeService.deleteEmployee(id);
         return "redirect:/";
     }
 }
